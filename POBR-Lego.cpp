@@ -8,12 +8,12 @@
 #include "LegoLogoRecognizer.h"
 
 int main(char* []) {
-
 	//cv::Mat image = cv::imread("obrazy/LEGO_LOGO.jpg");
-	//cv::Mat image = cv::imread("obrazy/Lego_3.jpg");
 
-	cv::Mat image = cv::imread("obrazy/Lego_1_compressed.jpg");
+	//cv::Mat image = cv::imread("obrazy/LEGO_LOGO_compressed.jpg");
+	cv::Mat image = cv::imread("obrazy/LEGO_5_2.jpg");
 
+	//cv::Mat image = cv::imread("obrazy/Lego_5_compressed.jpg");
 
 	if (image.empty())
 	{
@@ -21,6 +21,7 @@ int main(char* []) {
 		return 1;
 	}
 	LegoLogoRecognizer recognizer = LegoLogoRecognizer(image);
+
 	recognizer.recognize();
 
 	//LogoRecognizer lg = LogoRecognizer(image);
