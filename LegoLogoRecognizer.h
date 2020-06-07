@@ -11,8 +11,9 @@ class LegoLogoRecognizer
 {
 public:
 	std::vector<Segment> segments;
+	LegoLogoRecognizer();
 	LegoLogoRecognizer(cv::Mat image);
-	void recognize();
+	cv::Mat recognize();
 private:
 	cv::Mat originalImage;
 	cv::Mat processedImage;

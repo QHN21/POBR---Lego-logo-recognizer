@@ -1,20 +1,24 @@
 #include "LegoLogoRecognizer.h"
 
 
-const cv::Scalar LegoLogoRecognizer::MIN_RED = cv::Scalar(0, 100, 100);
-const cv::Scalar LegoLogoRecognizer::MAX_RED = cv::Scalar(4, 255, 255);
+const cv::Scalar LegoLogoRecognizer::MIN_RED = cv::Scalar(0, 50, 50);
+const cv::Scalar LegoLogoRecognizer::MAX_RED = cv::Scalar(6, 255, 255);
 
-const cv::Scalar LegoLogoRecognizer::MIN_RED_2 = cv::Scalar(174, 100, 100);
+const cv::Scalar LegoLogoRecognizer::MIN_RED_2 = cv::Scalar(174, 50, 50);
 const cv::Scalar LegoLogoRecognizer::MAX_RED_2 = cv::Scalar(180, 255, 255);
 const cv::Scalar LegoLogoRecognizer::MIN_WHITE = cv::Scalar(0, 0, 150);
 const cv::Scalar LegoLogoRecognizer::MAX_WHITE = cv::Scalar(180, 70, 255);
+
+LegoLogoRecognizer::LegoLogoRecognizer() {
+
+}
 
 LegoLogoRecognizer::LegoLogoRecognizer(cv::Mat image) {
 	originalImage = image.clone();
 	processedImage = image.clone();
 }
 
-void LegoLogoRecognizer::recognize() {
+cv::Mat LegoLogoRecognizer::recognize() {
 	convertColor();
 	thresholding();
 	segmentation();
@@ -26,7 +30,7 @@ void LegoLogoRecognizer::recognize() {
 
 	cv::namedWindow("Processed", cv::WINDOW_NORMAL);
 	cv::imshow("Processed", processedImage);
-	
+	return originalImage;
 }
 
 void LegoLogoRecognizer::convertColor() {
@@ -241,15 +245,19 @@ bool LegoLogoRecognizer::isBackground(const Segment& s) {
 	double NM2 = s.NM2;
 	double NM3 = s.NM3;
 	double NM7 = s.NM7;
-	double NM1_ref = 0.35;
-	double delta1 = 0.2;
-	double NM2_ref = 0.0023;
-	double delta2 = 0.0010;
-	double NM3_ref = 10e-05;
-	double delta3 = 9e-05;
-	double NM7_ref = 0.029;
-	double delta4 = 0.02;
-	if ((NM1_ref-delta1 < NM1 && NM1 < NM1_ref + delta1) && (NM2_ref - delta2 < NM2 && NM2 < NM2_ref + delta2) && (NM3_ref - delta3 < NM3 && NM3 < NM3_ref + delta3) && (NM7_ref - delta4 < NM7 && NM7 < NM7_ref + delta4)) {
+	double NM1_max = 0.39;
+	double NM1_min = 0.32;
+
+	double NM2_max = 0.005;
+	double NM2_min = 0.0002;
+
+	double NM3_max = 0.0009;
+	double NM3_min = 0.0000001;
+	
+	double NM7_max = 0.049;
+	double NM7_min = 0.009;
+	
+	if ((NM1_min < NM1 && NM1 < NM1_max) && (NM2_min < NM2 && NM2 < NM2_max) && (NM3_min < NM3 && NM3 < NM3_max) && (NM7_min < NM7 && NM7 < NM7_max)) {
 		return true;
 	}
 	return false;
